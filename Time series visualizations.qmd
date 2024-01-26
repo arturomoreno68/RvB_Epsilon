@@ -1,0 +1,50 @@
+---
+title: "Time series visualizations"
+author: "RvB"
+format: 
+  html:
+    toc: true
+    embed-resources: true
+editor: visual
+---
+
+## pkgs
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(fpp3)
+```
+
+## 
+
+```{r}
+aus_accommodation
+```
+
+ 
+
+```{r}
+# ALT +  "-" <-
+# CTRL + SHIFT + M   |> 
+tasmania <- aus_accommodation |> 
+  filter(State=="Tasmania") |> 
+  #select(-CPI, -State)
+  select(-c(CPI, State))|> 
+  # select(Date:Occupancy)
+  # select(Date, State, Takings, Occupancy)
+  mutate(
+    `Año bisiesto opción` = 1
+  ) |> 
+    janitor::clean_names()
+tasmania
+
+c(4, 8, 12, 5)
+c("pablo", "rodrigo", "pato")
+```
+```{r}
+tasmania |> 
+  autoplot(takings)
+```
+

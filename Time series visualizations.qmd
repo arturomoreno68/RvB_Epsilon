@@ -15,6 +15,9 @@ editor: visual
 #| message: false
 library(tidyverse)
 library(fpp3)
+library(plotly)
+library(patchwork)
+library(tidyquant)
 ```
 
 ## 
@@ -35,16 +38,58 @@ tasmania <- aus_accommodation |>
   # select(Date:Occupancy)
   # select(Date, State, Takings, Occupancy)
   mutate(
-    `Año bisiesto opción` = 1
+    `Año unión N°1` = 1
   ) |> 
     janitor::clean_names()
+
 tasmania
 
-c(4, 8, 12, 5)
-c("pablo", "rodrigo", "pato")
+tasmania |> 
+  glimpse()
+names(tasmania)
+
 ```
+
+library(tidyverse) #pkgs for data science
+library(fpp3) # pkgs for ts
+library(plotly) # plotly interactive plots
+library(patchwork) # for handling many plots in one figure
+library(tidyquant) # toolkit for financial analysis and downloading data
 ```{r}
 tasmania |> 
-  autoplot(takings)
+  autoplot(takings,color="slateblue1",size=2)+geom_point()
+```
+
+```{r}
+tasmania |> 
+  gg_season(log(takings))
+
+tasmania |> 
+  gg_subseries(log(takings))
+```
+
+```{r}
+tasmania |> 
+  gg_tsdisplay(log(takings),plot_type = "auto") #"auto", "partial", "season", "histogram", "scatter", "spectrum"
+```
+
+```{r}
+stocks <- c("TSLA","GOOGL","MSFT","AAPL","CEMEXCPO.MX")
+
+stocks_data <- tq_get(
+  x=stocks,
+  get="stock.prices",
+  from="2014-01-01",
+  to=today()-1
+)
+
+stocks_data
+stocks_data |> 
+  distinct(symbol)
+
+stocks_data <- stocks_data |> 
+  as_tsibble(index=date,key=symbol)
+
+stocks_data
 ```
 
